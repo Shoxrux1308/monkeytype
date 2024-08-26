@@ -1,17 +1,14 @@
 import requests
 import csv
+from html2image import Html2Image
 
 def get_wpm_accuracy(username:str,time:int)->dict:
     url = f'https://api.monkeytype.com/users/{username}/profile'
     response = requests.get(url)
     # Get the JSON data from the response
-    data = response.json()
- 
+    data = response.json() 
     time = data['data']['personalBests']['time'].get(str(time),0)
-    # Get time
-    
-    # time = time.get(str(time),0)
-    
+
     if time == 0:
         return {'wpm':0,'accuracy':0}
     # Get accuracy
@@ -20,8 +17,9 @@ def get_wpm_accuracy(username:str,time:int)->dict:
     wpm = time[0].get('wpm')
     return {'wpm':wpm,'accuracy':accuracy}
     
+
 # Read users info from csv file
-def get_user_info(file_path:str)->dict:
+def get_user_info(file_path:str)->list:
     users = []
     with open(file_path, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -36,22 +34,19 @@ def get_user_info(file_path:str)->dict:
             )
     return users
     
+
 def get_users_wpm_accuracy(users:dict,time:int)->dict:
-    users_wpm_accuracy = []
+    users_wpm_accuracy = {}
     for user in users:
-        data= get_wpm_accuracy(user['username'],time)
-        users_wpm_accuracy.append(
-            {
-                'full_name': user['full_name'],
-                'username': user['username'],
-                'wpm': data['wpm'],
-                'accuracy': data['accuracy']
-            }
-        )
+        users_wpm_accuracy[user['username']] = get_wpm_accuracy(user['username'],time)
     return users_wpm_accuracy
 
 
 
+users = get_user_info('monkeytype.csv')
 
-# print(users_wpm_accuracy)
-# # print(get_wpm_accuracy(username,15))
+
+
+users_wpm_accuracy = get_users_wpm_accuracy(users,15)
+print(users_wpm_accuracy)
+# print(get_wpm_accuracy(username,15))
