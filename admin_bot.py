@@ -9,7 +9,18 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Send a message to the group
-    await context.bot.send_message(chat_id=GROUP_CHAT_ID, text="Hello, everyone!")
+
+    users = get_user_info('monkeytype.csv')
+    users_wpm_accuracy = get_users_wpm_accuracy(users,15)
+    from prettytable import PrettyTable
+
+    table = PrettyTable()
+    table.field_names = ["Full Name", "Username", "WPM", "Accuracy"]
+
+    for user in users_wpm_accuracy:
+        table.add_row([user['full_name'], user['username'], user['wpm'], user['accuracy']])
+
+    await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=str(table))
 
 async def send_results(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     users = get_user_info('monkeytype.csv')
@@ -31,7 +42,7 @@ async def send_results(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     # Send a message to the group
     await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=results)
 # GROUP chat ID
-GROUP_CHAT_ID =-1002190225722
+GROUP_CHAT_ID =-4509575820
 TOKEN = os.environ['TOKEN']
 
 app = ApplicationBuilder().token(TOKEN).build()
