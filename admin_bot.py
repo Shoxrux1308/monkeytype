@@ -24,7 +24,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def send_results_to_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Send a message to the group
     users = get_user_info('monkeytype.csv')
-    users_wpm_accuracy = get_users_wpm_accuracy(users,15)
+    users_wpm_accuracy = get_users_wpm_accuracy(users,30)
     image_path = 'monkeytype_results.jpg'
     users_total_convert_image = get_users_html_convert(users_wpm_accuracy, image_path)
     
