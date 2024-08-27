@@ -7,6 +7,7 @@ def get_wpm_accuracy(username:str,time:int)->dict:
     response = requests.get(url)
     # Get the JSON data from the response
     data = response.json() 
+    print(username)
     time = data['data']['personalBests']['time'].get(str(time),0)
 
     if time == 0:
@@ -73,7 +74,7 @@ def get_users_html_convert(user_data: list, result_image_path: str):
     </head>
     <body>
         <div>
-            <h2>Typing Test Leaderboard</h2>
+            <h2>Typing Test Leaderboard by 60 seconds</h2>
             <table>
                 <tr>
                     <th>Full Name</th>
@@ -91,7 +92,7 @@ def get_users_html_convert(user_data: list, result_image_path: str):
         file_html.write(html_file_str)
 
     html_image = Html2Image()
-    html_image = Html2Image(size=(540, 450))
+    html_image = Html2Image(size=(430, 1080))
     image_conv = html_image.screenshot(
         html_file='index.html',
         css_file='style.css',
