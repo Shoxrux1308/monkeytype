@@ -38,7 +38,7 @@ async def send_results(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     # Send a message to the group
     await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=results)
 # GROUP chat ID
-GROUP_CHAT_ID =-1002190225722
+GROUP_CHAT_ID =-4509575820
 TOKEN = os.environ['TOKEN']
 
 
